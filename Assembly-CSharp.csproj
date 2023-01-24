@@ -59,6 +59,7 @@
     <Compile Include="Assets\Scripts\Player\HealthBar.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyStats.cs" />
     <Compile Include="Assets\StabDamage.cs" />
+    <Compile Include="Assets\Scripts\Enemy\EnemyHealthBar.cs" />
     <Compile Include="Assets\Scripts\Player\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\Other\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyMovement.cs" />
@@ -72,7 +73,6 @@
     <Compile Include="Assets\DamageNumbers.cs" />
     <Compile Include="Assets\Scripts\Enemy &amp; Player\Bullet.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyBehaviour.cs" />
-    <Compile Include="Assets\Scripts\Enemy\EnemyHealthBar.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

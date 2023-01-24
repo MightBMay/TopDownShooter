@@ -41,10 +41,37 @@ public class ShotHandler : MonoBehaviour
             removeHeight.y = 0;
             Spawnbullet(removeHeight.normalized);
         }
-        
+    }
+    public void Shoot(float spread)
+    {
+        Vector3 removeHeight;
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
-        
-        
+        if (Physics.Raycast(ray, out hit))
+        {
+            removeHeight = hit.point - transform.position;
+            print(removeHeight);
+            removeHeight.y = 0;
+
+            // Generate a random offset vector
+            float spreadRad = spread * Mathf.Deg2Rad;
+            Vector3 spreadVector = 
+            new Vector3(Mathf.Sin(Random.Range(-spreadRad, spreadRad)), 0, Mathf.Cos(Random.Range(-spreadRad, spreadRad)));
+
+            // only use the x and z components of spreadVector
+            spreadVector.y = 0;
+            // Add the spread vector to the removeHeight vector
+            Vector3 finalDirection = removeHeight + spreadVector;
+
+            Spawnbullet(finalDirection.normalized);
+        }
+    }
+    Vector3 GetSpread(Vector3 direction, float spread)
+    {
+        float spreadRad = spread * Mathf.Deg2Rad;
+        float randomAngle = Random.Range(-spreadRad, spreadRad);
+        return Quaternion.Euler(0, randomAngle, 0) * direction;
     }
     // if target is given, use the targets direction.
     public void Shoot(Transform target)

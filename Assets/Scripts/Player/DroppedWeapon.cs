@@ -21,8 +21,9 @@ public class DroppedWeapon : MonoBehaviour
 
     Dictionary<string, System.Type> allWeapons = new Dictionary<string, System.Type>()
     {
-        {"Basic Pistol", typeof(BasicPistol) },
-        {"Combat Knife", typeof(CombatKnife) }
+        {"Basic Pistol", typeof(Pistol) },
+        {"Combat Knife", typeof(CombatKnife) },
+        {"Basic Shotgun", typeof(Shotgun) }
     };
     [SerializeField]Weapon droppedWeapon;
 

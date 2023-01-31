@@ -18,7 +18,7 @@ public class Inventory : MonoBehaviour
     {
         shotHandler = GetComponent<ShotHandler>();
         statsMult = GetComponent<Stats>().statMultipliers;
-        AddWeapon(new CombatKnife(shotHandler,this));
+        AddWeapon(new Shotgun(shotHandler,this));
 
     }
     public void AddWeapon(Weapon weapon)
@@ -174,6 +174,8 @@ public class RangedWeapon : Weapon
         public int magSize;
         public int storedAmmo;
         public float reloadSpeed;
+        public float bulletSpread;
+        public float pelletCount;
         public GameObject bulletObject;
         public Color lightColour;
         public float lightRange;
@@ -184,7 +186,10 @@ public class RangedWeapon : Weapon
         {
             if (!canFire||curMag<=0) { return; }
             if (!MagCheck()) { inv.StartCoroutine(inv.ReloadWeapon(this, reloadSpeed)); }
-            sHandler.Shoot();
+            for (int i = 0;i<pelletCount; i++)
+            {
+                sHandler.Shoot();
+            }
             curMag--;
             if (!MagCheck()) { inv.StartCoroutine(inv.ReloadWeapon(this, reloadSpeed)); }
             inv.StartCoroutine(inv.ShotTimer(this, 1 / (attackRate * (1 + inv.statsMult.attackRateMultiplier))));
@@ -272,9 +277,9 @@ public class MeleeWeapon : Weapon
 
 }
 
-public class BasicPistol : RangedWeapon
+public class Pistol : RangedWeapon
     {
-        public BasicPistol(ShotHandler sh, Inventory inv)
+        public Pistol(ShotHandler sh, Inventory inv)
         {   this.sHandler =sh;
             this.inv = inv;
             this.Name = "Basic Pistol";
@@ -286,6 +291,7 @@ public class BasicPistol : RangedWeapon
             this.canFire = true;
             this.magSize = 7;
             this.curMag = 7;
+            this.pelletCount = 1;
             this.storedAmmo = 28;
             this.reloadSpeed = 1;
             this.bulletObject = null;
@@ -293,7 +299,7 @@ public class BasicPistol : RangedWeapon
             this.lightRange = 10;
             this.lightIntensity = 0.01f;
         }
-        public BasicPistol(ShotHandler sh, Inventory inv,GameObject projectile)
+        public Pistol(ShotHandler sh, Inventory inv,GameObject projectile)
         {   this.sHandler =sh;
             this.inv = inv;
             this.Name = "Basic Pistol";
@@ -302,6 +308,7 @@ public class BasicPistol : RangedWeapon
             this.attackRate = 1;
             this.bulletDespawnTimer = 5;
             this.bulletSpeed = 5;
+            this.pelletCount = 1;
             this.canFire = true;
             this.magSize = 7;
             this.curMag = 7;
@@ -344,3 +351,70 @@ public class CombatKnife : MeleeWeapon {
 
     } 
 
+public class Shotgun :RangedWeapon
+{
+    public Shotgun(ShotHandler sh, Inventory inv)
+    {
+        this.sHandler = sh;
+        this.inv = inv;
+        this.Name = "Basic Shotgun";
+        this.rarity = Rarity.Common;
+        this.damageFlat = 1;
+        this.attackRate = 5f;
+        this.bulletDespawnTimer = 5;
+        this.bulletSpeed = 10;
+        this.bulletSpread = 180;
+        this.pelletCount = 10;
+        this.canFire = true;
+        this.magSize = 8;
+        this.curMag = 8;
+        this.storedAmmo = 48;
+        this.reloadSpeed = 1;
+        this.bulletObject = null;
+        this.lightColour = new Color(255, 0, 0);
+        this.lightRange = 10;
+        this.lightIntensity = 0.01f;
+    }
+    public Shotgun(ShotHandler sh, Inventory inv, GameObject projectile)
+    {
+        this.sHandler = sh;
+        this.inv = inv;
+        this.Name = "Basic Shotgun";
+        this.rarity = Rarity.Common;
+        this.damageFlat = 0;
+        this.attackRate = .3f;
+        this.bulletDespawnTimer = 5;
+        this.bulletSpeed = 10;
+        this.bulletSpread = 180;
+        this.pelletCount = 10;
+        this.canFire = true;
+        this.magSize = 8;
+        this.curMag = 8;
+        this.storedAmmo = 48;
+        this.reloadSpeed = 1;
+        this.bulletObject = projectile;
+        this.lightColour = new Color(255, 0, 0);
+        this.lightRange = 10;
+        this.lightIntensity = 0.01f;
+    }
+    public override void Shoot()
+    {
+        if (!canFire || curMag <= 0) { return; }
+        if (!MagCheck()) { inv.StartCoroutine(inv.ReloadWeapon(this, reloadSpeed)); }
+        for (int i = 0; i < pelletCount; i++)
+        {
+            sHandler.Shoot(this.bulletSpread);
+        }
+        curMag--;
+        if (!MagCheck()) { inv.StartCoroutine(inv.ReloadWeapon(this, reloadSpeed)); }
+        inv.StartCoroutine(inv.ShotTimer(this, 1 / (attackRate * (1 + inv.statsMult.attackRateMultiplier))));
+    }
+
+
+    public override void OnNoAmmo()
+    {
+        Debug.Log("no ammo");
+    }
+
+
+}

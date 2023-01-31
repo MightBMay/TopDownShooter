@@ -35,6 +35,7 @@ using UnityEditor;
                         rangedWeapon.damageFlat = EditorGUILayout.FloatField("Flat Damage", rangedWeapon.damageFlat);
                         rangedWeapon.attackRate = EditorGUILayout.FloatField("Attack Rate", rangedWeapon.attackRate);
                         rangedWeapon.curMag = EditorGUILayout.IntField("Current Ammo", rangedWeapon.curMag);
+                        rangedWeapon.bulletSpread = EditorGUILayout.FloatField("Bullet Spread", rangedWeapon.bulletSpread);
                         rangedWeapon.storedAmmo = EditorGUILayout.IntField("Stored Ammo", rangedWeapon.storedAmmo);
                         rangedWeapon.magSize = EditorGUILayout.IntField("Mag Size", rangedWeapon.magSize);
                         rangedWeapon.reloadSpeed = EditorGUILayout.FloatField("Reload Speed", rangedWeapon.reloadSpeed);
